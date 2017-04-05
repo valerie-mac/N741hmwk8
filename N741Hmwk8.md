@@ -1,10 +1,3 @@
-# N741hmwk8
-N741 Homework 8
-
-Please use this Github repository for N741 Homework 8. Follow the steps and instructions below - which are also contained in the `N741Hmwk8.XXX` files.
-
------
-
 N741 Homework 8
 ================
 Melinda K. Higgins, PhD.
@@ -307,4 +300,3 @@ bcdat <- bcdatMalignant
 4.  While PCA is an unsupervised data analysis method (i.e. no "target" class information is used in the analysis), do you think the 2 PCs extracted do a good job of helping to distinguish Benign cases from Malignant cases (i.e. look back at the overall dataset Scores Plot). Explain your rationale.
 
 5.  Please save your RMD to a Github repository. Submit the PDF report for Homework 8 to CANVAS and include a link to your Homework 8 Github Repository.
-
