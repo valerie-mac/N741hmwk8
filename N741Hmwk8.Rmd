@@ -1,10 +1,10 @@
 ---
 title: "N741 Homework 8"
-author: "Melinda K. Higgins, PhD."
-date: "April 4, 2017"
+author: "Valerie Mac"
+date: "April 12, 2017"
 output:
-  github_document: default
   html_document: default
+  github_document: default
   pdf_document: default
   word_document: default
 ---
@@ -188,18 +188,195 @@ _HINT: simply rename the new subsets and run the code steps above._
 # redo for benign ==============
 bcdat <- bcdatBenign
 # run steps above
+```
+#Steps 1-4 for Benign cases only
+```{r}
+## 1. Perform the PCA for Bengin Cases Only
+# use only columns 2 through 10
+# you do not need the idnum, nor the class variables
+pr.out <- prcomp(bcdat[,2:10], scale=TRUE)
+summary(pr.out)
+```
 
+## 2. Make plots of the variance and PVE 
+
+### Plot of the Variances of Each PC
+
+```{r}
+plot(pr.out)
+```
+
+### Plot of the PVE and Cumulative PVE of each PC
+
+```{r}
+# plots of the PVE percent variance explained
+pve = 100*pr.out$sdev^2/sum(pr.out$sdev^2)
+pve
+plot(pve, type = "o", ylab = "Cumulative PVE", xlab = "Principal Component", col="blue")
+plot(cumsum(pve), type = "o", ylab = "Cumulative PVE", xlab = "Principal Component", col="brown3")
+
+```
+
+## 3. Make a "loadings plot" of the variables
+
+```{r}
+# loadings are in the "rotation" part of the 
+# pr.out list object. "rotation" is a matrix
+# with a row for each variable and a column for
+# each PC.
+pr.out$rotation
+
+# choose the 1st and 2nd columns for the 1st 2 PCs
+# and plot these loading weights for the 9
+# variables. I tweaked the limits some
+# feel free to change these as needed
+plot(pr.out$rotation[,1],pr.out$rotation[,2],
+     xlim=c(-0.5,0.1),ylim=c(-0.5,1),
+     cex=2, pch=19,
+     xlab = "Principal Component 1",
+     ylab = "Principal Component 2",
+     main = "Loadings Plot for PC 1 and 2")
+
+# add xpd=FALSE to prevent lines drawn outside plot area
+par(xpd=FALSE)
+
+# add red dashed lines for the axes at y=0 and x=0
+abline(h=0, col="red")
+abline(v=0, col="red")
+
+# overlay the variable names on this loading plot
+text(pr.out$rotation[,1],pr.out$rotation[,2],
+     labels = rownames(pr.out$rotation),
+     pos = 3)
+```
+
+## 4. Scores Plot on 1st 2 PCs
+
+```{r}
+# scores plot - use x from the pr.out list object
+# plot scores on 1st 2 PCs, columns 1 and 2 of x
+# color the points by the "class" variable for
+# benign (class=2) or malignant (class=4)
+plot(pr.out$x[,1],pr.out$x[,2], 
+     col = bcdat$class,
+     xlab = "Principal Component 1",
+     ylab = "Principal Component 2",
+     main = "Scores Plot on PC 1 and 2",
+     sub = "Blue=Benign (class=2) and Red=Malignant (class=4)")
+```
+
+```{r}
 # redo for malignant ==================
 bcdat <- bcdatMalignant
 # run steps above
 ```
 
+## 1. Perform the PCA for Malignant Cases only
+```{r}
+# use only columns 2 through 10
+# you do not need the idnum, nor the class variables
+pr.out <- prcomp(bcdat[,2:10], scale=TRUE)
+summary(pr.out)
+```
+
+## 2. Make plots of the variance and PVE 
+
+### Plot of the Variances of Each PC
+
+```{r}
+plot(pr.out)
+```
+
+### Plot of the PVE and Cumulative PVE of each PC
+
+```{r}
+# plots of the PVE percent variance explained
+pve = 100*pr.out$sdev^2/sum(pr.out$sdev^2)
+pve
+plot(pve, type = "o", ylab = "Cumulative PVE", xlab = "Principal Component", col="blue")
+plot(cumsum(pve), type = "o", ylab = "Cumulative PVE", xlab = "Principal Component", col="brown3")
+
+```
+
+## 3. Make a "loadings plot" of the variables
+
+```{r}
+# loadings are in the "rotation" part of the 
+# pr.out list object. "rotation" is a matrix
+# with a row for each variable and a column for
+# each PC.
+pr.out$rotation
+
+# choose the 1st and 2nd columns for the 1st 2 PCs
+# and plot these loading weights for the 9
+# variables. I tweaked the limits some
+# feel free to change these as needed
+plot(pr.out$rotation[,1],pr.out$rotation[,2],
+     xlim=c(-0.5,0.1),ylim=c(-0.5,1),
+     cex=2, pch=19,
+     xlab = "Principal Component 1",
+     ylab = "Principal Component 2",
+     main = "Loadings Plot for PC 1 and 2")
+
+# add xpd=FALSE to prevent lines drawn outside plot area
+par(xpd=FALSE)
+
+# add red dashed lines for the axes at y=0 and x=0
+abline(h=0, col="red")
+abline(v=0, col="red")
+
+# overlay the variable names on this loading plot
+text(pr.out$rotation[,1],pr.out$rotation[,2],
+     labels = rownames(pr.out$rotation),
+     pos = 3)
+```
+
+## 4. Scores Plot on 1st 2 PCs
+
+```{r}
+# scores plot - use x from the pr.out list object
+# plot scores on 1st 2 PCs, columns 1 and 2 of x
+# color the points by the "class" variable for
+# benign (class=2) or malignant (class=4)
+plot(pr.out$x[,1],pr.out$x[,2], 
+     col = bcdat$class,
+     xlab = "Principal Component 1",
+     ylab = "Principal Component 2",
+     main = "Scores Plot on PC 1 and 2",
+     sub = "Blue=Benign (class=2) and Red=Malignant (class=4)")
+```
+
 2. In the overall dataset, when looking at the loadings plot, which variables cluster together? which variables do not lie with that cluster?
+
+In the overall dataset, the following variables appear to cluster together: clump thickness, Uniformity of cell size, uniformity of cell shape, marginal adhesion, single epithelial cell size, bare nuclei, bland chromatin, and normal nucleoli. 
+
+Mitosis does not appear to cluster with the other variables.
 
 3. How do the variable clusters seen in the loading plots for the Benign data subset and Malignant subset differ? and how are they similar if at all?
 
+There appear to be more variable clusters (and thus more variability) in the Malignant dataset as compared to the benign dataset. Also, the variable mitosis appeared in a cluster with other variables in the malignant dataset which is quite different than its positon on the loading plot of the overall dataset and the benign dataset. 
+
+When looking at the malignant and benign datasets, clump thickness distanced itself from the cluster it had been part of in the dataset as a whole both the malignant and benign datasets.  
+
+Bare nuclei was a variable that also did not become apparent as a potential separate cluster until the loading plotS for the benign and malignant dataset.
+
+Also, mitosis did not appear as a separate "cluster" in the malignant dataset as compared to the benign dataset, which may be a defining characteristic of the malignant data subset.
+
 4. Is using 2 principal components reasonable for summarizing the variability seen in this Breast Cancer dataset with 9 measurements? Explain your reasoning for (a) the overall dataset, (b) the Benign subset and (c) the Malignant subset
+
+Using 2 PCs is a slim approach for PCA, in general. For this dataset, using 2 PCs is reasonable for summarizing the variability, but it is not ideal. 
+
+(a) Based upon the plot of the cumulative PVE (Percent of Variability Explained) and PCs, it appears that for the overall dataset, 2 Pcs explains the majority of the variance in the dataset, with the slope of the line dropping significantly after 2, and even more after, and so adding a third PC could be valuable. However, beyond 3 it does not appear that a fourth would help.
+
+(b) For the benign subset, there appears to me more variance than was visually apparent in the dataset as a whole. Also, the plot of the cumulative PVE and PCs does not have as consistent of a drop off after 2 PCs. Based upon this information and the emergence of a potential 3rd cluster on the loading plot, I would prefer more than 3 PCs. 
+
+(c) The variability appears to be even greater within the malignant subset. Due to this increased variability, I feel that more than 2 PCs is warranted, especially based upon the slope of the line on the plot of the cumulative PVE and PCs which appears to show that there are reasonable increases in cumulative PVE as principal components are added.  
 
 5. While PCA is an unsupervised data analysis method (i.e. no "target" class information is used in the analysis), do you think the 2 PCs extracted do a good job of helping to distinguish Benign cases from Malignant cases (i.e. look back at the overall dataset Scores Plot). Explain your rationale.
 
+I feel like 2 PCs extracted may not be sufficient for summarizing the variability within this dataset for distinguishing benign from malignant cases. According to the appearance of overall data scores plot, 2 PCs differentiates most of the cases, but when trying to differentiate such an important clinical phenotype, I feel that a more liberal use of PCs to differentiate benign from malignant would be prudent, especially due to the overlapping area of the benign and malignant cases. This perception underscored by the variability within the malignant subset, and the clustering that appears in the malignant subset loading plots.
+
 6. Please save your RMD to a Github repository. Submit the PDF report for Homework 8 to CANVAS and include a link to your Homework 8 Github Repository.
+
+My data repository for HW 8:
+[https://github.com/valerie-mac/N741hmwk8.git](https://github.com/valerie-mac/N741hmwk8.git)
